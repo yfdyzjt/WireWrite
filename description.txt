@@ -1,0 +1,1 @@
+WireWrite can write data to the wiring memory made by @yfdyzjt.
