@@ -126,6 +126,7 @@ namespace WireWrite.Commands
                     dir = (dir == 1) ? 0 : 1;
                 }
             }
+            Main.NewText("Write complete");
         }
         public static void Action(string[] args)
         {
