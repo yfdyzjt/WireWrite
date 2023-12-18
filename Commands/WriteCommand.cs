@@ -18,14 +18,17 @@ namespace WireWrite.Commands
 {
     internal class WriteCommand
     {
-        private static readonly int aOffsetX;
-        private static readonly int aOffsetY;
-        private static readonly int oOffset1X = 23;
-        private static readonly int oOffset1Y = 23;
-        private static readonly int oOffset2X = 1120;
-        private static readonly int oOffset2Y = 23;
+        private static readonly int iPos1X = 22;
+        private static readonly int iPos1Y = 22;
+        private static readonly int iPos2X = 1119;
+        private static readonly int iPos2Y = 22;
+        private static readonly int iMaxLine = 256;
+        private static readonly int iMaxRow = 64;
 
-        private static readonly int oMaxLine = 256;
+        private static readonly int dPosX = 22;
+        private static readonly int dPosY = 23;
+        private static readonly int dMaxLine = 256;
+        private static readonly int dMaxRow = 64;
         private static uint XOR(uint data)
         {
             return data ^ (data << 1);
@@ -34,26 +37,86 @@ namespace WireWrite.Commands
         {
             return (ushort)(data ^ (data << 1));
         }
-        private static void DataRAMWrite(int x, int y, string file)
-        {
-            Main.NewText("Unrealized Commands");
-        }
         private static void DataROMWrite(int x, int y, string file)
         {
-            Main.NewText("Unrealized Commands");
-        }
-        private static void InsRAMWrite(int x, int y, string file)
-        {
-            Main.NewText("Unrealized Commands");
+            using BinaryReader binaryReader = new(File.Open(file, FileMode.Open));
+            int dir = 1, line = 0, row = 0, color = 0;
+            int pX = x, pY = y;
+            int x1, y1;
+            uint xdata = 0;
+
+            binaryReader.BaseStream.Position = 0x100000;
+            while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
+            {
+                xdata = XOR(binaryReader.ReadUInt32());
+
+                x1 = pX + dPosX + dir * 31;
+                y1 = pY + dPosY;
+                for (int i = 0; i < 32; i++)
+                {
+                    Tile tile;
+                    switch (color)
+                    {
+                        case 0:
+                            tile = Main.tile[x1, y1 + 1];
+                            tile.RedWire = true;
+                            tile = Main.tile[x1, y1 + 0];
+                            tile.RedWire = (xdata & (1 << i)) == 0;
+                            break;
+                        case 1:
+                            tile = Main.tile[x1, y1 + 1];
+                            tile.BlueWire = true;
+                            tile = Main.tile[x1, y1 + 0];
+                            tile.BlueWire = (xdata & (1 << i)) == 0;
+                            break;
+                        case 2:
+                            tile = Main.tile[x1, y1 + 2];
+                            tile.GreenWire = true;
+                            tile = Main.tile[x1, y1 + 3];
+                            tile.GreenWire = (xdata & (1 << i)) == 0;
+                            break;
+                        case 3:
+                            tile = Main.tile[x1, y1 + 2];
+                            tile.YellowWire = true;
+                            tile = Main.tile[x1, y1 + 3];
+                            tile.YellowWire = (xdata & (1 << i)) == 0;
+                            break;
+                    }
+                    x1 += dir == 1 ? -1 : 1;
+                }
+
+                row++;
+                pX += 32 + dir;
+                dir = (dir == 1) ? 0 : 1;
+                if (row >= dMaxRow)
+                {
+                    row = 0;
+                    color++;
+                    pX = x;
+                }
+                if (color >= 4)
+                {
+                    color = 0;
+                    line++;
+                    pY += 3;
+                }
+                if (line >= dMaxLine)
+                {
+                    break;
+                }
+            }
+            Main.NewText("Write data memory complete");
         }
         private static void InsROMWrite(int x, int y, string file)
         {
             using BinaryReader binaryReader = new(File.Open(file, FileMode.Open));
-            int dir = 1, line = 0, color = 0, cell = 0;
+            int dir = 1, line = 0, row = 0, color = 0, cell = 0;
             int pX = x, pY = y;
             int x1, y1;
             ushort data = 0, xdata = 0;
             bool flag = false;
+
+            binaryReader.BaseStream.Position = 0;
             while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
             {
                 if (flag)
@@ -71,8 +134,8 @@ namespace WireWrite.Commands
                     }
                 }
 
-                x1 = pX + ((cell == 0) ? oOffset1X : oOffset2X) + dir * 15;
-                y1 = pY + ((cell == 0) ? oOffset1Y : oOffset2Y);
+                x1 = pX + ((cell == 0) ? iPos1X : iPos2X) + dir * 15;
+                y1 = pY + ((cell == 0) ? iPos1Y : iPos2Y);
                 for (int i = 0; i < 16; i++)
                 {
                     Tile tile;
@@ -118,59 +181,27 @@ namespace WireWrite.Commands
                     line++;
                     pY += 3;
                 }
-                if (line >= oMaxLine)
+                if (line >= iMaxLine)
                 {
                     line = 0;
+                    row++;
                     pY = y;
                     pX += 16 + dir;
                     dir = (dir == 1) ? 0 : 1;
                 }
+                if (row >= iMaxRow)
+                {
+                    break;
+                }
             }
-            Main.NewText("Write complete");
+            Main.NewText("Write instruction memory complete");
         }
         public static void Action(string[] args)
         {
-            string[] parts = args[2].Split(',');
-            int x = int.Parse(parts[0]);
-            int y = int.Parse(parts[1]);
-            switch (args[0])
-            {
-                case "--ins":
-                case "-i":
-                    switch (args[1])
-                    {
-                        case "--rom":
-                        case "-o":
-                            InsROMWrite(x, y, args[3]);
-                            break;
-                        case "--ram":
-                        case "-a":
-                            InsRAMWrite(x, y, args[3]);
-                            break;
-                        default:
-                            throw new UsageException("Commands not recognized");
-                    }
-                    break;
-                case "--data":
-                case "-d":
-
-                    switch (args[1])
-                    {
-                        case "-rom":
-                        case "-o":
-                            DataROMWrite(x, y, args[3]);
-                            break;
-                        case "-ram":
-                        case "-a":
-                            DataRAMWrite(x, y, args[3]);
-                            break;
-                        default:
-                            throw new UsageException("Commands not recognized");
-                    }
-                    break;
-                default:
-                    throw new UsageException("Options not recognized");
-            }
+            string[] inspos = args[1].Split(',');
+            InsROMWrite(int.Parse(inspos[0]), int.Parse(inspos[1]), args[0]);
+            string[] datapos = args[2].Split(',');
+            DataROMWrite(int.Parse(datapos[0]), int.Parse(datapos[1]), args[0]);
         }
     }
     public class WriteCommandGame : ModCommand
@@ -180,15 +211,11 @@ namespace WireWrite.Commands
         public override string Command => "write";
 
         public override string Usage
-            => "write [OPTIONS] [COMMAND] <COORDINATE> <FILENAME>" +
-            "\nOptions:" +
-            "\n -i,--ins     Write ins to memory" +
-            "\n -d,--data    Write data to memory" +
-            "\nCommands:" +
-            "\n -a,--ram     Write to RAM" +
-            "\n -o,--rom     Write to ROM" +
-            "\n <COORDINATE> Coordinates of the upper left corner of the memory tile" +
-            "\n <FILENAME>   Filename of the binary file";
+            => "write <FILENAME> <INS_POSITION> <DATA_POSITION>" +
+            "\n <FILENAME>        Filename of the binary file" +
+            "\n <INS_POSITION>    Tile position in the upper left corner of the instruction memory" +
+            "\n <DATA_POSITION>   Tile position in the upper left corner of the data memory";
+
 
         public override string Description
             => "Write binary data into memory";

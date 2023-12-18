@@ -33,7 +33,8 @@ namespace WireWrite.Items
 
         public override bool? UseItem(Player player)
         {
-            Main.chatText += $"{ Player.tileTargetX },{ Player.tileTargetY }";
+            Main.NewText($"You clicked: {Player.tileTargetX},{Player.tileTargetY}");
+            Main.chatText += $"{Player.tileTargetX},{Player.tileTargetY}";
             return true;
         }
 
