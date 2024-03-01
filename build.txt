@@ -1,3 +1,0 @@
-displayName = WireWrite
-author = yfdyzjt
-version = 0.1
