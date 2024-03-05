@@ -133,7 +133,7 @@ namespace WireWrite.Terraria
 
                             binaryWriter.BaseStream.Position = sectionPointers[1];
                             offset = SaveTiles(world.Tiles, (int)world.Version, world.TilesWide, world.TilesHigh, binaryWriter, tileFrameImportant) - sectionPointers[2];
-                            
+
                             binaryWriter.Write(data);
 
                             sectionPointers[2] += offset;

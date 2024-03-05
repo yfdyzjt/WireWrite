@@ -9,15 +9,19 @@ namespace WireWrite
             string worldFileName;
             string dataFileName;
 
-            Terraria.World.GetFileName(args, out worldFileName, out dataFileName);
+            World.GetFileName(args, out worldFileName, out dataFileName);
 
-            var world = Terraria.World.LoadWorld(worldFileName);
+            StartLoadWorld:
+            Console.WriteLine($"Start world load");
+            var world = World.LoadWorld(worldFileName);
             Console.WriteLine($"Complete world load: {world.Title}");
 
-            world.RunScripts(dataFileName);
+            Console.WriteLine($"Start run scripts");
+            if (!world.RunScripts(dataFileName)) if (Console.ReadKey().KeyChar == '\r') goto StartLoadWorld;
             Console.WriteLine("Complete run scripts");
 
-            Terraria.World.SaveWorld(world, worldFileName);
+            Console.WriteLine($"Start world save");
+            World.SaveWorld(world, worldFileName);
             Console.WriteLine($"Complete world save: {world.Title}");
         }
     }

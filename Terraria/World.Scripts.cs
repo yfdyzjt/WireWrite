@@ -9,16 +9,17 @@ namespace WireWrite.Terraria
 {
     public partial class World
     {
-        public void RunScripts(string dataFileName)
+        public bool RunScripts(string dataFileName)
         {
-            foreach (Sign s in Signs)
+            try
             {
-                try
+                using (var fileStream = new FileStream(dataFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
-                    using (var fileStream = new FileStream(dataFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                    using (var binaryReader = new BinaryReader(fileStream))
                     {
-                        using (var binaryReader = new BinaryReader(fileStream))
+                        foreach (Sign s in Signs)
                         {
+
                             if (s.Text.StartsWith("WIRE_WRITE"))
                             {
                                 var script = new Script.Script(s);
@@ -30,14 +31,32 @@ namespace WireWrite.Terraria
                                 }
                             }
                         }
-
                     }
                 }
-                catch
-                {
-                    throw;
-                }
             }
+            catch (LuaParseException e)
+            {
+                Console.WriteLine($"Lua script have a syntactical exception.\r\n" +
+                    $"Title: {e.FileName}\r\n"+
+                    $"Message: {e.Message}\r\n"+
+                    $"Line: {e.Line}" );
+                Console.WriteLine("Press enter to reload the world.");
+                return false;
+            }
+            catch (LuaRuntimeException e)
+            {
+                Console.WriteLine($"Lua script have a runtime exception.\r\n" +
+                    $"Title: {e.FileName}\r\n" +
+                    $"Message: {e.Message}\r\n" +
+                    $"Line: {e.Line}");
+                Console.WriteLine("Press enter to reload the world.");
+                return false;
+            }
+            catch
+            {
+                throw;
+            }
+            return true;
         }
     }
 }
