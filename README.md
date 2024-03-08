@@ -125,6 +125,7 @@ end
 
 *注：脚本使用的框架为[NeoLua](https://github.com/neolithos/neolua)，语法为Lua 5.3*
 
+### 文件组成
 脚本由下面的三部分组成：
 
 ```lua
@@ -134,6 +135,7 @@ WIRE_WRITE <脚本标题>
 
 其中，`WIRE_WRITE`是脚本必须要有的前缀，标记了这是一个 Wire Write 使用的脚本。  
 
+### 传入参数
 脚本执行时，Wire Write 会向脚本传入三个变量：
 
 | 名称 | 类型 | 说明 |
@@ -141,7 +143,8 @@ WIRE_WRITE <脚本标题>
 | sign | Script | 脚本所在的告示牌 |
 | tiles | Tile[][] | 脚本所在世界的图格数据 |
 | bin | BinaryReader | 数据文件的二进制读取器 |
-***
+
+### Script
 `Script`类型包括以下的属性：
 
 | 名称 | 类型 | 说明 |
@@ -150,7 +153,8 @@ WIRE_WRITE <脚本标题>
 | Text | string | 脚本的内容 |
 | X | int | 告示牌左上角图格的横坐标 |
 | Y | int | 告示牌左上角图格的纵坐标 |
-***
+
+### Tile
 `tiles`是一个`Tile`类交错数组，可以使用下面的形式获得坐标为`(x ,y)`的图格数据：
 
 ```lua
@@ -182,5 +186,5 @@ tiles[x][y]
 | FullBrightWall | bool | 墙壁是否全亮 |
 
 *注：仅列出`Tile`类型的部分内容，详细内容请参看[代码](https://github.com/yfdyzjt/WireWrite/blob/master/Terraria/Tile.cs "Tile.cs")*  
-***
+
 小型储存电路脚本可以参考[`Bunny.lua`](https://github.com/yfdyzjt/WireWrite/blob/master/Example/Bunny.lua "Bunny.lua")，大型储存电路脚本可以参考我的[泰拉瑞亚计算机](https://github.com/yfdyzjt/terrariacomputer "Terraria Computer")项目中储存电路使用的脚本。
