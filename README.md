@@ -3,7 +3,7 @@ Wire Write 是一个可以向泰拉瑞亚储存电路中写入数据的独立程
 
 ## 使用
 
-***注：Wire Write 使用了[.NET 8.0](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0 ".NET 8.0")，如果没有安装，请点击蓝色的字安装***
+*注：Wire Write 使用了[.NET 8.0](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0 ".NET 8.0")，如果没有安装，请点击蓝色的字安装*
 
 你可以使用下面的指令打开 Wire Write：
 
@@ -34,7 +34,7 @@ wirewrite Bunny.wld Bunny.bin
 这条指令打开会地图文件`Bunny.wld`，执行里面的脚本，将数据文件`Bunny.bin`里面的数据写入到脚本指定的只读储存器中。
 
 ![Bunny.wld](./Image/Bunny.wld.png "Bunny.wld")  
-***Bunny.wld内的ROM，脚本在左上角的告示牌内***
+*Bunny.wld内的ROM，脚本在左上角的告示牌内*
 ***
 之后再进入地图，激活拉杆，你应该会看到类似下面的效果:
 
@@ -45,7 +45,7 @@ wirewrite Bunny.wld Bunny.bin
 实际上，将视频写入只读储存器只是 Wire Write 功能的一部分。它完全可以将任何计算机可以处理和表示的数据（文字、图片、视频、程序等等）写入到绝大部分的储存电路中（寄存器、只读储存器、可读写储存器、顺序储存器、随机储存器等等）。  
 只需要改变储存电路左上角的告示牌内的`Lua`脚本即可。 
 
-***注：`Lua`语言是与`C`语言类似的脚本语言，如果你会`C`语言的话，可以直接编写`Lua`脚本，只需要注意一点点与C不同的地方***
+*注：`Lua`语言是与`C`语言类似的脚本语言，如果你会`C`语言的话，可以直接编写`Lua`脚本，只需要注意一点点与C不同的地方*
 
 ***
 但是当你打开左上角的告示牌，会看见一大堆像乱码的东西：  
@@ -119,11 +119,11 @@ end
   
 ######
 
-***注：为什么要转义换行符？因为泰拉瑞亚的告示牌会限制换行符的数量，但是每行的长度没有限制。所以需要将转义后再写入告示牌。***
+*注：为什么要转义换行符？因为泰拉瑞亚的告示牌会限制换行符的数量，但是每行的长度没有限制。所以需要将转义后再写入告示牌。*
 
 ## 脚本
 
-***注：脚本使用的框架为[NeoLua](https://github.com/neolithos/neolua)，语法为Lua 5.3***
+*注：脚本使用的框架为[NeoLua](https://github.com/neolithos/neolua)，语法为Lua 5.3*
 
 脚本由下面的三部分组成：
 
@@ -181,6 +181,6 @@ tiles[x][y]
 | FullBrightBlock | bool | 物块是否全亮 |
 | FullBrightWall | bool | 墙壁是否全亮 |
 
-***注：仅列出`Tile`类型的部分内容，详细内容请参看代码***  
+*注：仅列出`Tile`类型的部分内容，详细内容请参看[代码](https://github.com/yfdyzjt/WireWrite/blob/master/Terraria/Tile.cs "Tile.cs")*  
 ***
 小型储存电路脚本可以参考[`Bunny.lua`](https://github.com/yfdyzjt/WireWrite/blob/master/Example/Bunny.lua "Bunny.lua")，大型储存电路脚本可以参考我的[泰拉瑞亚计算机](https://github.com/yfdyzjt/terrariacomputer "Terraria Computer")项目中储存电路使用的脚本。
