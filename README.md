@@ -38,7 +38,7 @@ wirewrite Bunny.wld Bunny.bin
 ***
 之后再进入地图，激活拉杆，你应该会看到类似下面的效果:
 
-![Bunny Run](./Image/Bunny_Run.gif "Bunny Run")    
+<img src="./Image/Bunny_Run.gif" width="10%"> 
 
 **兔子动了起来！**  
 
