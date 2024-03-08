@@ -164,7 +164,7 @@ tiles[x][y]
 
 | 名称 | 类型 | 说明 |
 | :--- | :--- | :--- |
-| IsActiv | bool | 物块是否活动，非空的物块应为True（由于ID 0存在物块，所以使用额外的变量判断物块是否为空） |
+| IsActive | bool | 物块是否活动，非空的物块应为True（由于ID 0存在物块，所以使用额外的变量判断物块是否为空） |
 | Type | ushort | [物块的ID](https://terraria.wiki.gg/wiki/Tile_IDs "Tile IDs") |
 | Wall | ushort | [墙壁的ID](https://terraria.wiki.gg/wiki/Wall_IDs "Wall IDs") |
 | U | Int16 | 物块框架的横坐标（例如亮/灭/故障逻辑灯的物块ID相同，但框架横坐标不同） |
