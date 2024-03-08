@@ -3,7 +3,7 @@ Wire Write 是一个可以向泰拉瑞亚储存电路中写入数据的独立程
 
 ## 使用
 
-***注：Wire Write 使用了[.NET 8.0]("https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0" ".NET 8.0")，如果没有安装，请点击蓝色的字安装***
+***注：Wire Write 使用了[.NET 8.0](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0 ".NET 8.0")，如果没有安装，请点击蓝色的字安装***
 
 你可以使用下面的指令打开 Wire Write：
 
