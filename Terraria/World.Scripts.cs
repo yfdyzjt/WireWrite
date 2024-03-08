@@ -37,18 +37,23 @@ namespace WireWrite.Terraria
             catch (LuaParseException e)
             {
                 Console.WriteLine($"Lua script have a syntactical exception.\r\n" +
-                    $"Title: {e.FileName}\r\n"+
-                    $"Message: {e.Message}\r\n"+
-                    $"Line: {e.Line}" );
+                    $"Message: {e.Message}\r\n" +
+                    $"Line: {e.Line}");
                 Console.WriteLine("Press enter to reload the world.");
                 return false;
             }
             catch (LuaRuntimeException e)
             {
                 Console.WriteLine($"Lua script have a runtime exception.\r\n" +
-                    $"Title: {e.FileName}\r\n" +
                     $"Message: {e.Message}\r\n" +
                     $"Line: {e.Line}");
+                Console.WriteLine("Press enter to reload the world.");
+                return false;
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine($"Lua script have a file exception.\r\n" +
+                    $"Message: {e.Message}\r\n");
                 Console.WriteLine("Press enter to reload the world.");
                 return false;
             }
