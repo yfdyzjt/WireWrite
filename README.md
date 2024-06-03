@@ -1,5 +1,7 @@
 # Wire Write
-Wire Write 是一个可以向泰拉瑞亚储存电路中写入数据的独立程序。
+Wire Write 是一个可以向泰拉瑞亚储存电路中写入数据的独立程序。  
+  
+**WireWrite 已经弃用，不会继续更新。它的最新版本是可用的。该项目已迁移至[TMake](https://github.com/yfdyzjt/TMake "TMake")**
 
 ## 使用
 
